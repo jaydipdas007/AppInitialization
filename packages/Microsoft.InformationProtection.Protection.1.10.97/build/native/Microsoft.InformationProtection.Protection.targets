@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)../../build/native/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)../../build/native/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="Win32Debug" Condition="(( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 ) And ('$(Platform)' == 'Win32' ) )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../../build/native/lib/Debug/x86/*.lib;%(AdditionalDependencies)</AdditionalDependencies>      
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="Win32Release" Condition="(( $(Configuration.ToLower().IndexOf('debug')) == -1 ) And ('$(Platform)' == 'Win32' ) )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../../build/native/lib/Release/x86/*.lib;%(AdditionalDependencies)</AdditionalDependencies>      
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="Win64Debug" Condition="(( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 ) And ('$(Platform)' == 'x64' ) )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../../build/native/lib/Debug/amd64/*.lib;%(AdditionalDependencies)</AdditionalDependencies>      
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="Win64Release" Condition="(( $(Configuration.ToLower().IndexOf('debug')) == -1 ) And ('$(Platform)' == 'x64' ) )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../../build/native/lib/Release/amd64/*.lib;%(AdditionalDependencies)</AdditionalDependencies>      
+    </Link>
+  </ItemDefinitionGroup>  
+
+
+  <Target Name="Microsoft_InformationProtection_File_redist_AfterBuild" AfterTargets="AfterBuild">   
+  </Target>
+  <Target Name="Microsoft_InformationProtection_File_redist_AfterBuild_Win32_and_Debug" Label="Win32 and Debug" Condition="'$(Platform.ToLower())' == 'win32' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )" AfterTargets="Microsoft_InformationProtection_File_redist_AfterBuild">
+    <ItemGroup>
+      <ApiDlls Include="$(MSBuildThisFileDirectory)bins\debug\x86\*.dll"/>
+    </ItemGroup>    
+    <Copy SourceFiles="@(ApiDlls)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true"/>
+  </Target>
+  <Target Name="Microsoft_InformationProtection_File_redist_AfterBuild_Win32_and_Release" Label="Win32 and Release" Condition="'$(Platform.ToLower())' == 'win32' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )" AfterTargets="Microsoft_InformationProtection_File_redist_AfterBuild">
+    <ItemGroup>
+      <ApiDlls Include="$(MSBuildThisFileDirectory)bins\release\x86\*.dll"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(ApiDlls)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true"/>
+  </Target> 
+  <Target Name="Microsoft_InformationProtection_File_redist_AfterBuild_Win64_and_Debug" Label="Win64 and Debug" Condition="'$(Platform.ToLower())' == 'x64' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )" AfterTargets="Microsoft_InformationProtection_File_redist_AfterBuild">
+    <ItemGroup>
+      <ApiDlls Include="$(MSBuildThisFileDirectory)bins\debug\amd64\*.dll"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(ApiDlls)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true"/>
+  </Target>
+  <Target Name="Microsoft_InformationProtection_File_redist_AfterBuild_Win64_and_Release" Label="Win64 and Release" Condition="'$(Platform.ToLower())' == 'x64' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )" AfterTargets="Microsoft_InformationProtection_File_redist_AfterBuild">
+    <ItemGroup>
+      <ApiDlls Include="$(MSBuildThisFileDirectory)bins\release\amd64\*.dll"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(ApiDlls)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true"/>
+  </Target>       
+</Project>

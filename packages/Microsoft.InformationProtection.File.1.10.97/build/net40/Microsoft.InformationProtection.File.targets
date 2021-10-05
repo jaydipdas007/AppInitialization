@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MipConfiguration>release</MipConfiguration>
+    <MipSupports64>false</MipSupports64>
+    <MipSupports64 Condition="('$(Platform)' == 'AnyCPU') Or ('$(Platform)' == '') Or ('$(Platform)' == 'x64') Or ('$(Platform)' == 'amd64')">true</MipSupports64>
+    <MipSupports86>false</MipSupports86>
+    <MipSupports86 Condition="('$(Platform)' == 'AnyCPU') Or ('$(Platform)' == '') Or ('$(Platform)' == 'x86') Or ('$(Platform)' == 'win32')">true</MipSupports86>
+  </PropertyGroup>
+  
+  <!-- Copy dependencies when using the .NET Wrapper library -->
+  <ItemGroup Condition="$(MipSupports64) or !$(MipSupports86)">
+    <None Include="$(MSBuildThisFileDirectory)..\..\dotnet\win7-x64\native\$(MipConfiguration)\*.dll" Link="x64\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(MSBuildThisFileDirectory)..\native\bins\$(MipConfiguration)\amd64\*.dll" Link="x64\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(MipSupports86) or !$(MipSupports64)">
+    <None Include="$(MSBuildThisFileDirectory)..\..\dotnet\win7-x86\native\$(MipConfiguration)\*.dll" Link="x86\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(MSBuildThisFileDirectory)..\native\bins\$(MipConfiguration)\x86\*.dll" Link="x86\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup> 
+</Project>
